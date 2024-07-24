@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Test Evaluation Round II</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select, button {
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        input[type="file"] {
+            padding: 0;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9f9f9;
+            display: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+            align-items: center;
+        }
+        #outputPhoto {
+            margin-right: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        #outputPhoto img {
+            max-width: 120px;
+            height: auto;
+        }
+        #outputDetails {
+            display: flex;
+            flex-direction: column;
+        }
+        #outputDetails p {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        #outputDetails span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Machine Test Evaluation Round II</h1>
+        <form id="evaluationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="photo">Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+
+            <label for="rank">Rank:</label>
+            <select id="rank" name="rank" required>
+                <option value="First Rank">First Rank</option>
+                <option value="Second Rank">Second Rank</option>
+                <option value="Third Rank">Third Rank</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="output">
+            <div id="outputPhoto"></div>
+            <div id="outputDetails">
+                <p>ID: <span id="outputID"></span></p>
+                <p>User Name: <span id="outputName"></span></p>
+                <p>Congratulations!! You have secured <span id="outputRank"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateID() {
+            const randomID = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            return `#${randomID}`;
+        }
+
+        document.getElementById('evaluationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const photo = document.getElementById('photo').files[0];
+            const rank = document.getElementById('rank').value;
+            const idNumber = generateID();
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('outputPhoto').innerHTML = '<img src="' + e.target.result + '" alt="User Photo">';
+            };
+            reader.readAsDataURL(photo);
+
+            document.getElementById('outputName').innerText = name;
+            document.getElementById('outputID').innerText = idNumber;
+            document.getElementById('outputRank').innerText = rank;
+
+            document.getElementById('output').style.display = 'flex';
+            document.getElementById('evaluationForm').reset();
+        });
+    </script>
+</body>
+</html>
